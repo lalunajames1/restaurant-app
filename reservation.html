@@ -9,8 +9,9 @@
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
         crossorigin="anonymous">
-        <link rel="stylesheet" href="style.css">
+    <!-- <link rel="stylesheet" href="style.css"> -->
 </head>
+
 <body>
     <div class="container">
         <div class="jumbotron text-center">
@@ -19,9 +20,9 @@
             <hr>
             <p>Book your reservation!!</p>
             <p>
-                <a class="btn btn-primary btn-lg" href="./tables.html" role="button">
+                <a class="btn btn-primary btn-lg" href="/tables" role="button">
                     <span class="glyphicon glyphicon-list" aria-hidden="true"></span>View Tables</a>
-                <a class="btn btn-default btn-lg" href="./index.html" role="button">
+                <a class="btn btn-default btn-lg" href="/" role="button">
                     <span class="glyphicon glyphicon-home" aria-hidden="true"></span>
                 </a>
             </p>
@@ -62,12 +63,41 @@
             </div>
         </div>
         <footer>
-            <a href="./api/tables">API Table Link</a>
+            <a href="/api/tables">API Table Link</a>
             <span> | </span>
-            <a href="./api/reservation">API Wait List</a>
+            <a href="/api/reservation">API Wait List</a>
         </footer>
 
     </div>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+        crossorigin="anonymous"></script>
+    <script>
+        $(document).on("click", ".submit", function () {
+            let reservation = {
+                customerName: $('#reserve_name').val().trim(),
+                customerPhoneNumber: $('#reserve_phone').val().trim(),
+                customerEmail: $('#reserve_email').val().trim(),
+                customerUniqueId: $('#reserve_uniqueID').val().trim()
+            }
+
+            $.post('/api/reservation', reservation, function (data) {
+                if (data) {
+                    alert("Yay! Booked successfully!")
+                } else {
+                    alert("You're on the wait list!")
+                }
+                
+                $('#reserve_name').val("")
+                $('#reserve_phone').val("")
+                $('#reserve_email').val("")
+                $('#reserve_uniqueID').val("")
+            }).then(function (data) {
+                console.log("Front-end" + data);
+            })
+
+            return false;
+        })
+    </script>
 
 </body>
 
